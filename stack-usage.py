@@ -89,10 +89,11 @@ if __name__ == "__main__":
             cgraph.getFunction(text[3]).setStackSize(int(cols[1]))
 
     with open(args.callgraph, "r") as f:
+        name = None
         for line in f:
             if line.find("@") != -1 and not line.startswith("  Aux: @"):
                 name = line[0:line.find("/")]
-            if line.startswith("  Calls:") and len(line) > 10:
+            if line.startswith("  Calls:") and len(line) > 10 and name is not None:
                 for callee in line[9:].split(" "):
                     if callee.find("/") != -1:
                         cgraph.addCall(name, callee[:callee.find("/")])
